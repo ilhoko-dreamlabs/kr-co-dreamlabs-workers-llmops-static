@@ -9,6 +9,7 @@
 - Overview
 - Model Gateway (LiteLLM routing concept)
 - Model Catalog
+- Named provider catalog: Anthropic/Claude, OpenAI/GPT, Google/Gemini, DeepSeek, Moonshot AI/Kimi, Zhipu AI/GLM
 - Workers / Virtual Keys
 - Usage / Cost
 - Requests / Observability
@@ -19,7 +20,7 @@
 - Settings (read-only demo configuration)
 - Architecture / Runbook
 
-정적 산출물은 `site/` 디렉터리뿐입니다. 프레임워크, package install, runtime secret, 외부 CDN과 analytics를 사용하지 않습니다.
+정적 산출물은 `site/` 디렉터리뿐입니다. 프레임워크, package install, runtime secret, 외부 CDN과 analytics를 사용하지 않습니다. 브랜드 아이콘은 로컬 SVG로 함께 배포되며, 표시는 실제 연결·제휴·보증을 의미하지 않습니다.
 
 ## Local verification
 
@@ -46,6 +47,7 @@ py -m http.server 4173 --bind 127.0.0.1
 - [`docs/DEMO_BOUNDARY.md`](docs/DEMO_BOUNDARY.md)
 - [`docs/INFORMATION_ARCHITECTURE.md`](docs/INFORMATION_ARCHITECTURE.md)
 - [`docs/PUBLISH_RUNBOOK.md`](docs/PUBLISH_RUNBOOK.md)
+- [`docs/THIRD_PARTY_NOTICES.md`](docs/THIRD_PARTY_NOTICES.md)
 
 ## Verification and publication status
 

@@ -4,7 +4,7 @@
     "sampledAt": "2026-10-13 14:30 KST",
     "currency": "Demo Credits",
     "connected": false,
-    "notice": "합성 데이터 기반 정적 시연입니다. 실제 Gateway에 연결되지 않습니다."
+    "notice": "실제 벤더 명칭과 브랜드 아이콘을 사용한 합성 정적 시연입니다. 실제 Gateway 또는 provider에 연결되지 않습니다."
   },
   "summary": {
     "requests": 1842,
@@ -26,9 +26,12 @@
     {"label":"10/13","requests":266,"cost":28.4}
   ],
   "models": [
-    {"id":"demo-model-balanced","displayName":"Balanced Reasoner","provider":"Provider Alpha","alias":"dream-balanced","status":"healthy","requests":780,"successRate":98.1,"p95LatencyMs":1650,"cost":86.4,"context":"128K","policy":"Default"},
-    {"id":"demo-model-fast","displayName":"Fast Assistant","provider":"Provider Beta","alias":"dream-fast","status":"healthy","requests":620,"successRate":97.9,"p95LatencyMs":840,"cost":62.8,"context":"64K","policy":"Low latency"},
-    {"id":"demo-model-deep","displayName":"Deep Analyst","provider":"Provider Gamma","alias":"dream-deep","status":"degraded","requests":442,"successRate":94.8,"p95LatencyMs":2940,"cost":35.0,"context":"200K","policy":"Analysis"}
+    {"id":"demo-model-claude","displayName":"Claude","provider":"Anthropic","icon":"./assets/providers/claude.svg","alias":"dream-claude","status":"healthy","requests":420,"successRate":98.1,"p95LatencyMs":1650,"cost":48.0,"context":"Demo 200K","policy":"Reasoning"},
+    {"id":"demo-model-gpt","displayName":"GPT","provider":"OpenAI","icon":"./assets/providers/openai.svg","alias":"dream-gpt","status":"healthy","requests":390,"successRate":98.4,"p95LatencyMs":1320,"cost":44.0,"context":"Demo 128K","policy":"Default"},
+    {"id":"demo-model-gemini","displayName":"Gemini","provider":"Google","icon":"./assets/providers/gemini.svg","alias":"dream-gemini","status":"healthy","requests":330,"successRate":97.9,"p95LatencyMs":1180,"cost":32.0,"context":"Demo 1M","policy":"Long context"},
+    {"id":"demo-model-deepseek","displayName":"DeepSeek","provider":"DeepSeek","icon":"./assets/providers/deepseek.svg","alias":"dream-deepseek","status":"healthy","requests":270,"successRate":97.0,"p95LatencyMs":1760,"cost":24.0,"context":"Demo 128K","policy":"Analysis"},
+    {"id":"demo-model-kimi","displayName":"Kimi","provider":"Moonshot AI","icon":"./assets/providers/kimi.svg","alias":"dream-kimi","status":"healthy","requests":240,"successRate":96.7,"p95LatencyMs":1890,"cost":20.0,"context":"Demo 128K","policy":"Long context"},
+    {"id":"demo-model-glm","displayName":"GLM","provider":"Zhipu AI","icon":"./assets/providers/glm.svg","alias":"dream-glm","status":"healthy","requests":192,"successRate":96.4,"p95LatencyMs":1940,"cost":16.2,"context":"Demo 128K","policy":"Balanced"}
   ],
   "workers": [
     {"id":"demo-worker-00","name":"worker00","profile":"Operations","keyAlias":"vk_demo_worker00","status":"active","requests":920,"budget":120,"used":91.5,"lastSeen":"2분 전"},
@@ -36,15 +39,15 @@
     {"id":"demo-worker-docs","name":"worker-docs","profile":"Documentation","keyAlias":"vk_demo_workerdocs","status":"active","requests":312,"budget":40,"used":34.5,"lastSeen":"11분 전"}
   ],
   "requests": [
-    {"id":"demo-req-a81c","time":"14:28:43","worker":"worker00","model":"dream-balanced","operation":"chat.completions","status":"completed","latencyMs":1420,"tokens":2840,"cost":0.42},
-    {"id":"demo-req-b72d","time":"14:27:16","worker":"worker-qa","model":"dream-fast","operation":"responses","status":"completed","latencyMs":760,"tokens":1180,"cost":0.18},
-    {"id":"demo-req-c63e","time":"14:25:09","worker":"worker-docs","model":"dream-deep","operation":"chat.completions","status":"failed","latencyMs":3010,"tokens":0,"cost":0},
-    {"id":"demo-req-d54f","time":"14:23:41","worker":"worker00","model":"dream-balanced","operation":"responses","status":"completed","latencyMs":1310,"tokens":3210,"cost":0.49},
-    {"id":"demo-req-e45a","time":"14:21:02","worker":"worker-qa","model":"dream-fast","operation":"embeddings","status":"rate-limited","latencyMs":220,"tokens":0,"cost":0},
-    {"id":"demo-req-f36b","time":"14:18:37","worker":"worker-docs","model":"dream-deep","operation":"responses","status":"completed","latencyMs":2730,"tokens":4120,"cost":0.63}
+    {"id":"demo-req-a81c","time":"14:28:43","worker":"worker00","model":"dream-claude","operation":"chat.completions","status":"completed","latencyMs":1420,"tokens":2840,"cost":0.42},
+    {"id":"demo-req-b72d","time":"14:27:16","worker":"worker-qa","model":"dream-gpt","operation":"responses","status":"completed","latencyMs":760,"tokens":1180,"cost":0.18},
+    {"id":"demo-req-c63e","time":"14:25:09","worker":"worker-docs","model":"dream-gemini","operation":"chat.completions","status":"failed","latencyMs":3010,"tokens":0,"cost":0},
+    {"id":"demo-req-d54f","time":"14:23:41","worker":"worker00","model":"dream-deepseek","operation":"responses","status":"completed","latencyMs":1310,"tokens":3210,"cost":0.49},
+    {"id":"demo-req-e45a","time":"14:21:02","worker":"worker-qa","model":"dream-kimi","operation":"chat.completions","status":"rate-limited","latencyMs":220,"tokens":0,"cost":0},
+    {"id":"demo-req-f36b","time":"14:18:37","worker":"worker-docs","model":"dream-glm","operation":"responses","status":"completed","latencyMs":2730,"tokens":4120,"cost":0.63}
   ],
   "incidents": [
-    {"id":"demo-incident-003","title":"Provider Gamma latency elevated","severity":"SEV-3","status":"monitoring","started":"2026-10-13 13:42","impact":"Deep Analyst 요청 일부 지연","owner":"Demo Platform Team"},
+    {"id":"demo-incident-003","title":"Synthetic provider latency drill","severity":"SEV-3","status":"monitoring","started":"2026-10-13 13:42","impact":"시연용 다중 provider 요청 일부 지연","owner":"Demo Platform Team"},
     {"id":"demo-incident-002","title":"Budget alert delivery delay","severity":"SEV-4","status":"resolved","started":"2026-10-11 09:18","impact":"관리 알림 지연, 요청 처리 영향 없음","owner":"Demo Operations"},
     {"id":"demo-incident-001","title":"Synthetic readiness drill","severity":"DRILL","status":"resolved","started":"2026-10-08 16:00","impact":"시연용 훈련, 사용자 영향 없음","owner":"Demo Platform Team"}
   ],
@@ -54,7 +57,7 @@
     {"id":"demo-release-010","version":"demo-0.10.0","state":"superseded","date":"2026-10-03","summary":"초기 Gateway console shell","actor":"release-demo"}
   ],
   "audit": [
-    {"id":"demo-audit-77","time":"14:12","actor":"demo-operator","action":"Viewed model policy","target":"dream-balanced","result":"allowed"},
+    {"id":"demo-audit-77","time":"14:12","actor":"demo-operator","action":"Viewed model policy","target":"dream-claude","result":"allowed"},
     {"id":"demo-audit-76","time":"13:54","actor":"release-demo","action":"Compared configuration","target":"demo-0.12.0","result":"allowed"},
     {"id":"demo-audit-75","time":"13:21","actor":"demo-operator","action":"Simulated key rotation","target":"vk_demo_worker00","result":"demo-only"},
     {"id":"demo-audit-74","time":"12:46","actor":"policy-demo","action":"Blocked unknown model alias","target":"demo-unknown","result":"blocked"}

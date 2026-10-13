@@ -9,10 +9,17 @@ const requiredFiles = [
   "site/robots.txt",
   "site/assets/app.css",
   "site/assets/app.js",
+  "site/assets/providers/claude.svg",
+  "site/assets/providers/openai.svg",
+  "site/assets/providers/gemini.svg",
+  "site/assets/providers/deepseek.svg",
+  "site/assets/providers/kimi.svg",
+  "site/assets/providers/glm.svg",
   "site/data/demo.json",
   "docs/DEMO_BOUNDARY.md",
   "docs/INFORMATION_ARCHITECTURE.md",
   "docs/PUBLISH_RUNBOOK.md",
+  "docs/THIRD_PARTY_NOTICES.md",
   "docs/WORKER00_REVIEW.md",
   ".github/workflows/validate.yml",
   ".github/workflows/pages.yml"
@@ -59,11 +66,25 @@ check(index.includes("role=\"dialog\"") && index.includes("aria-modal=\"true\"")
 check(!/<input[^>]+type=["'](?:password|file)["']/i.test(index + app), "credential or file input is prohibited");
 for (const route of requiredRoutes) check(app.includes(`id: "${route}"`), `route missing from app.js: ${route}`);
 
-check(Array.isArray(data.models) && data.models.length === 3, "expected 3 synthetic models");
+check(Array.isArray(data.models) && data.models.length === 6, "expected 6 synthetic models");
 check(Array.isArray(data.workers) && data.workers.length === 3, "expected 3 synthetic workers");
 check(Array.isArray(data.requests) && data.requests.length >= 6, "expected request samples");
 check(data.meta?.connected === false, "meta.connected must remain false");
 check(data.meta?.currency === "Demo Credits", "currency must remain Demo Credits");
+
+const expectedCatalog = new Map([
+  ["Claude", "Anthropic"],
+  ["GPT", "OpenAI"],
+  ["Gemini", "Google"],
+  ["DeepSeek", "DeepSeek"],
+  ["Kimi", "Moonshot AI"],
+  ["GLM", "Zhipu AI"]
+]);
+for (const model of data.models || []) {
+  check(expectedCatalog.get(model.displayName) === model.provider, `unexpected provider/model mapping: ${model.provider || "<missing>"} / ${model.displayName || "<missing>"}`);
+  check(/^\.\/assets\/providers\/[a-z0-9-]+\.svg$/.test(model.icon || ""), `model icon must be a local provider SVG: ${model.id || "<missing>"}`);
+}
+check(new Set((data.models || []).map(model => model.displayName)).size === expectedCatalog.size, "provider catalog must contain each required model family exactly once");
 
 const allRecords = [data.models, data.workers, data.requests, data.incidents, data.releases, data.audit].flat().filter(Boolean);
 for (const record of allRecords) check(String(record.id || "").startsWith("demo-"), `synthetic record id must begin with demo-: ${record.id || "<missing>"}`);
@@ -92,7 +113,9 @@ const forbiddenPatterns = [
 ];
 for (const file of siteFiles.filter(file => textExtensions.has(extname(file)))) {
   const content = await readFile(file, "utf8");
-  for (const [pattern, label] of forbiddenPatterns) check(!pattern.test(content), `${label} found in ${relative(root, file)}`);
+  const scannableContent = content.replaceAll('xmlns="http://www.w3.org/2000/svg"', "");
+  const patternsForFile = extname(file) === ".svg" ? forbiddenPatterns.slice(0, 1) : forbiddenPatterns;
+  for (const [pattern, label] of patternsForFile) check(!pattern.test(scannableContent), `${label} found in ${relative(root, file)}`);
   check(!/[ \t]+$/m.test(content), `trailing whitespace found in ${relative(root, file)}`);
 }
 

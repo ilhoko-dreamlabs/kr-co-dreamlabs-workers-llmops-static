@@ -1,46 +1,44 @@
-# LLMOps prototype verification — 2026-10-13
+# LLMOps prototype verification — provider catalog
 
-## Source and local changes
+## Scope
 
 - Repository: `ilhoko-dreamlabs/kr-co-dreamlabs-workers-llmops-static`
-- Base main / origin/main: `35023b785ba45717bac7457690a35cbc32605c2b` (clean at checkout).
-- Candidate branch: `fix/dreamlabs-llmops-demo-completeness`.
-- Preserve all nine existing views and synthetic data; add Gateway, Audit and read-only Settings.
-- Repair model status filtering, skip-link routing, detail-dialog keyboard focus and pre-load render guard.
-- Rename Normal display to Baseline to match the existing degraded-provider fixture.
-- No real provider calls, credentials, operational records or new external assets.
+- Candidate branch: `feat/real-provider-catalog`
+- Base `main`: `002af7f0571bbdbfdaf39e07afa0a32327c96b69`
+- Replace three anonymized provider samples with six named demo catalog entries:
+  Anthropic/Claude, OpenAI/GPT, Google/Gemini, DeepSeek, Moonshot AI/Kimi and Zhipu AI/GLM.
+- Bundle the matching SVG marks locally. No runtime CDN, provider call, credential or operational record is added.
+- Preserve the persistent `DEMO · NON-PRODUCTION` boundary and state that names, marks, health, context and cost values do not prove live connectivity.
 
 ## Local verification
 
-- `node scripts/validate.mjs`: PASS, 12 required files, 12 routes, 22 synthetic records.
+- `node scripts/validate.mjs`: PASS — 19 required files, 12 routes, 25 synthetic records.
 - `node --check site/assets/app.js`: PASS.
 - `git diff --check`: PASS.
-- Chromium via Playwright, HTTP localhost: all 12 routes at widths 1440, 768, 390, 320 px; one h1, active navigation, persistent demo banner, no document horizontal overflow.
-- Routes: overview, gateway, models, workers, usage, requests, health, releases, security, audit, settings, architecture.
-- Model search combined with status filters; request status/search and empty state; detail dialog Shift+Tab and Escape; skip link preserves current route; mobile menu closes on navigation; all three scenarios: PASS.
-- Browser route checks observed no external network requests and no page JavaScript errors.
-- There is no compilation step or separate lint command; publish artifact is `site/`.
+- Local HTTP root and representative icon asset: HTTP 200.
+- Browser desktop catalog: six provider marks loaded, six model rows rendered, one `h1`, no document-level horizontal overflow.
+- Browser mobile catalog at 390 px target: menu breakpoint active, table remains locally scrollable, no document-level horizontal overflow.
+- Search for `Kimi`: one matching row.
+- GLM detail drawer: Zhipu AI / GLM identity and synthetic-record notice present.
+- Browser console: no warning or error entries.
+- Runtime references: local CSS, JavaScript and six local SVG files only.
 
-## Public deployment evidence (before this candidate)
+## Data integrity
 
-- GitHub Actions run `38389833970`: success on base commit. Jobs validate-input `115270612487`, build `115270653632`, deploy `115270714583`: success.
-- HTTPS root and `/assets/app.js` at `llmops.workers.dreamlabs.co.kr`: HTTP 403, OAuth2 Proxy login page, Apache server header. TLS verification was enabled.
-- DNS address observed by this worker: `121.141.19.98`; this observation alone does not establish the authoritative record type or the intended target.
-- Default GitHub Pages URL also ultimately returns HTTP 403.
-- Public hash routes share the blocked root HTTP document; client-side route rendering cannot be verified on the public host.
-- The connected GitHub fetch tool does not support the Pages settings endpoint. Current Pages domain/HTTPS configuration has not been read back.
-- A successful deployment job does not establish working public routing. No DNS, TLS, proxy or Pages settings were changed.
+- Model requests remain equal to the summary total: 1,842.
+- Model Demo Credits remain equal to the summary total: 184.2.
+- Worker and daily request totals remain equal to the same summary.
+- All demo records retain the `demo-` identifier prefix.
+- `meta.connected` remains `false`; no provider endpoint or credential is present.
 
-## Publication and rollback
+## Failed attempt and recovery
 
-This candidate is local until its commit/push are explicitly approved. Publication remains a separate manual Pages workflow dispatch for an exact approved SHA. Do not claim the candidate is published based on the earlier successful run.
+The first validation pass treated numeric SVG path data as a private IPv4 address. The validator was corrected so SVG files still receive the external-reference scan, while credential/private-network patterns remain scoped to files where those strings can be meaningful. Validation then passed.
 
-After authorized publication, verify root, CSS, JavaScript and fixture return 200; check all 12 hash routes on desktop/mobile, reload, search, details, and zero provider requests. Confirm the public asset contents match the approved source.
+The browser performance-entry API was unavailable in the preview sandbox. Local-only runtime references were instead verified from rendered `img`, `script` and `link` elements, together with the static no-external-reference validator.
 
-If a published candidate must be rolled back, request approval to dispatch the existing Pages workflow for base commit `35023b785ba45717bac7457690a35cbc32605c2b`. Recheck public assets afterward. This restores the artifact only; it cannot repair the currently observed 403 routing/authentication issue.
+## Publication boundary
 
-Before proposing any DNS/TLS/Pages settings mutation, obtain readback of the exact existing record/settings and authority to manage that target, then request canonical Approval with action, risk and restoration values. No GitLab infrastructure MR or CODEOWNER work is part of this prototype task.
+Source validation does not establish publication. GitHub Pages publication remains a manual workflow dispatch for an exact 40-character commit SHA after merge. For a release, verify that the workflow succeeds, the public root and six SVG assets return HTTP 200, and the public catalog renders the same six providers without external provider requests.
 
-## Procedures consulted
-
-Inbound `rra-request-handler`; DreamLabs Skill Registry README, REGISTRY and WORKER_USAGE_GUIDE from the available local checkout. Registry freshness could not be verified through the configured connector (404). Approval procedure applies only to concrete protected publication actions.
+Rollback uses the same manual workflow with the last known-good deployed SHA. No DNS, TLS, GitLab, CODEOWNER or provider-runtime change is part of this UI catalog update.

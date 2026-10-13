@@ -127,6 +127,16 @@ th { color: var(--muted); font-size: 9px; letter-spacing: .08em; text-transform:
 tbody tr { transition: background .14s ease; }
 tbody tr:hover { background: #faf6fb; }
 .table-link { border: 0; padding: 0; background: transparent; color: var(--accent-strong); cursor: pointer; font-weight: 800; text-decoration: underline; text-decoration-color: #cfb8da; text-underline-offset: 3px; }
+.provider-mark { display: inline-flex; align-items: center; gap: 9px; min-width: 0; }
+.provider-icon { width: 28px; height: 28px; display: inline-grid; flex: 0 0 auto; place-items: center; overflow: hidden; border: 1px solid #e6dce9; border-radius: 9px; background: #fff; box-shadow: 0 2px 8px rgba(47,32,52,.06); }
+.provider-icon.small { width: 23px; height: 23px; border-radius: 7px; }
+.provider-icon img { width: 17px; height: 17px; display: block; object-fit: contain; }
+.provider-icon.small img { width: 14px; height: 14px; }
+.provider-copy { display: inline-flex; min-width: 0; flex-direction: column; gap: 2px; }
+.provider-copy b { color: var(--text); font-size: 11px; }
+.provider-copy small { color: var(--muted); font-size: 9px; }
+.model-progress-label { display: inline-flex; min-width: 0; align-items: center; gap: 8px; }
+.detail-provider { margin: 17px 0 4px; padding: 13px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: #faf7fb; }
 .muted { color: var(--muted); }
 .mono { font-family: "SFMono-Regular", Consolas, monospace; font-size: .92em; }
 
