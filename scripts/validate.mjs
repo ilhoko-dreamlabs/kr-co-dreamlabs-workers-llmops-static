@@ -17,7 +17,7 @@ const requiredFiles = [
   ".github/workflows/validate.yml",
   ".github/workflows/pages.yml"
 ];
-const requiredRoutes = ["overview", "models", "workers", "usage", "requests", "health", "releases", "security", "architecture"];
+const requiredRoutes = ["gateway", "audit", "settings", "overview", "models", "workers", "usage", "requests", "health", "releases", "security", "architecture"];
 const textExtensions = new Set([".html", ".css", ".js", ".json", ".txt", ".xml", ".svg"]);
 const failures = [];
 

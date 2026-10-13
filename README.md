@@ -7,6 +7,7 @@
 ## Scope
 
 - Overview
+- Model Gateway (LiteLLM routing concept)
 - Model Catalog
 - Workers / Virtual Keys
 - Usage / Cost
@@ -14,6 +15,8 @@
 - Health / Incidents
 - Releases / Config
 - Security / Access
+- Audit
+- Settings (read-only demo configuration)
 - Architecture / Runbook
 
 정적 산출물은 `site/` 디렉터리뿐입니다. 프레임워크, package install, runtime secret, 외부 CDN과 analytics를 사용하지 않습니다.
@@ -43,3 +46,7 @@ py -m http.server 4173 --bind 127.0.0.1
 - [`docs/DEMO_BOUNDARY.md`](docs/DEMO_BOUNDARY.md)
 - [`docs/INFORMATION_ARCHITECTURE.md`](docs/INFORMATION_ARCHITECTURE.md)
 - [`docs/PUBLISH_RUNBOOK.md`](docs/PUBLISH_RUNBOOK.md)
+
+## Verification and publication status
+
+See [`docs/VERIFICATION.md`](docs/VERIFICATION.md) for the tested local candidate and the independently observed public HTTP result.

@@ -43,7 +43,7 @@
         <div class="topbar-actions">
           <label class="select-label" for="scenario-select">Demo scenario</label>
           <select id="scenario-select" aria-label="데모 시나리오 선택">
-            <option value="normal">Normal</option>
+            <option value="normal">Baseline</option>
             <option value="degraded">Degraded</option>
             <option value="incident">Incident drill</option>
           </select>
@@ -65,7 +65,7 @@
   <button class="sidebar-scrim" id="sidebar-scrim" type="button" aria-label="메뉴 닫기"></button>
 
   <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
-  <aside class="detail-drawer" id="detail-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" aria-hidden="true">
+  <aside class="detail-drawer" id="detail-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" aria-hidden="true" inert>
     <div class="drawer-header">
       <div><span class="eyebrow">DEMO DETAIL</span><h2 id="drawer-title">상세 정보</h2></div>
       <button class="icon-button" id="drawer-close" type="button" aria-label="상세 패널 닫기">×</button>

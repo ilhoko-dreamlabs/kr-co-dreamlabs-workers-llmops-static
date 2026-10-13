@@ -3,6 +3,7 @@
 
   const routes = [
     { id: "overview", label: "Overview", icon: "⌂", group: "Operate" },
+    { id: "gateway", label: "Model Gateway", icon: "⇄", group: "Operate" },
     { id: "models", label: "Model Catalog", icon: "◇", group: "Operate" },
     { id: "workers", label: "Workers / Keys", icon: "◎", group: "Operate" },
     { id: "usage", label: "Usage / Cost", icon: "▥", group: "Observe" },
@@ -10,10 +11,12 @@
     { id: "health", label: "Health / Incidents", icon: "♡", group: "Observe" },
     { id: "releases", label: "Releases / Config", icon: "⬡", group: "Govern" },
     { id: "security", label: "Security / Access", icon: "▣", group: "Govern" },
+    { id: "audit", label: "Audit", icon: "≡", group: "Govern" },
+    { id: "settings", label: "Settings", icon: "⚙", group: "Govern" },
     { id: "architecture", label: "Architecture / Runbook", icon: "⌘", group: "Govern" }
   ];
 
-  const state = { data: null, route: "overview", scenario: "normal", query: "", requestFilter: "all", returnFocus: null };
+  const state = { data: null, route: "overview", scenario: "normal", query: "", modelFilter: "all", requestFilter: "all", returnFocus: null };
   const els = {
     main: document.querySelector("#main-content"),
     nav: document.querySelector("#primary-nav"),
@@ -34,7 +37,7 @@
   const pct = value => `${Number(value).toFixed(1)}%`;
   const money = value => `${Number(value).toFixed(1)} DC`;
   const scenarioCopy = {
-    normal: { label: "All systems nominal", tone: "", text: "정상 운영 시나리오입니다. 아래 수치는 합성 표본이며 실시간 상태가 아닙니다." },
+    normal: { label: "Baseline sample", tone: "", text: "기본 합성 표본입니다. Provider Gamma의 관찰 중인 지연을 포함합니다. 아래 수치는 합성 표본이며 실시간 상태가 아닙니다." },
     degraded: { label: "Degraded simulation", tone: "warning", text: "Provider Gamma 지연 상승을 가정한 시뮬레이션입니다. 실제 장애를 의미하지 않습니다." },
     incident: { label: "Incident drill", tone: "danger", text: "SEV-2 대응 훈련 화면입니다. 실제 트래픽 차단이나 failover는 실행되지 않습니다." }
   };
@@ -84,9 +87,9 @@
   }
 
   function renderModels() {
-    const rows = state.data.models.map(model => `<tr><td><button class="table-link" data-detail-type="model" data-detail-id="${safe(model.id)}">${safe(model.displayName)}</button><br><span class="mono muted">${safe(model.id)}</span></td><td><span class="badge">${safe(model.provider)}</span></td><td class="mono">${safe(model.alias)}</td><td>${statusBadge(model.status)}</td><td>${safe(model.context)}</td><td>${safe(model.policy)}</td><td>${fmt.format(model.requests)}</td><td>${money(model.cost)}</td></tr>`).join("");
+    const rows = state.data.models.map(model => `<tr data-model-status="${safe(model.status)}"><td><button class="table-link" data-detail-type="model" data-detail-id="${safe(model.id)}">${safe(model.displayName)}</button><br><span class="mono muted">${safe(model.id)}</span></td><td><span class="badge">${safe(model.provider)}</span></td><td class="mono">${safe(model.alias)}</td><td>${statusBadge(model.status)}</td><td>${safe(model.context)}</td><td>${safe(model.policy)}</td><td>${fmt.format(model.requests)}</td><td>${money(model.cost)}</td></tr>`).join("");
     return pageHead("Model catalog", "외부 provider 모델을 Gateway alias와 정책으로 추상화하는 운영 카탈로그입니다.", demoButton("Compare policies") + demoButton("Add model", true)) + notice() +
-      card("Published gateway models", "실제 provider 이름, credential, endpoint는 노출하지 않습니다.", `<div class="filters"><input class="field search-field" id="model-search" type="search" placeholder="모델·alias 검색" aria-label="모델 검색"><button class="filter-chip active" type="button">All 3</button><button class="filter-chip" type="button">Healthy 2</button><button class="filter-chip" type="button">Degraded 1</button></div><div class="table-wrap"><table id="model-table"><thead><tr><th>Model</th><th>Provider</th><th>Gateway alias</th><th>Status</th><th>Context</th><th>Policy</th><th>Requests</th><th>Cost</th></tr></thead><tbody>${rows}</tbody></table></div>`);
+      card("Published gateway models", "실제 provider 이름, credential, endpoint는 노출하지 않습니다.", `<div class="filters"><input class="field search-field" id="model-search" type="search" placeholder="모델·alias 검색" aria-label="모델 검색">${["all", "healthy", "degraded"].map(filter => `<button class="filter-chip ${state.modelFilter === filter ? "active" : ""}" data-model-filter="${filter}" aria-pressed="${state.modelFilter === filter}" type="button">${filter} ${state.data.models.filter(model => filter === "all" || model.status === filter).length}</button>`).join("")}</div><div class="table-wrap"><table id="model-table"><thead><tr><th>Model</th><th>Provider</th><th>Gateway alias</th><th>Status</th><th>Context</th><th>Policy</th><th>Requests</th><th>Cost</th></tr></thead><tbody>${rows}</tbody></table></div>`);
   }
 
   function renderWorkers() {
@@ -154,7 +157,25 @@
       `<div class="section-gap">${card("Prototype boundaries", "What this public artifact does and does not prove", `<div class="grid three"><div><span class="eyebrow">PROVES</span><h3>Experience design</h3><p class="muted">정보 구조, 화면 흐름, 데이터 최소화, 반응형 UI.</p></div><div><span class="eyebrow">DOES NOT PROVE</span><h3>Runtime readiness</h3><p class="muted">LiteLLM, DB, DNS, TLS, provider 연결 또는 성능.</p></div><div><span class="eyebrow">NEXT GATE</span><h3>Approved publication</h3><p class="muted">Repository·Pages·custom domain 각각의 승인과 검증.</p></div></div>`)}</div>`;
   }
 
-  const renderers = { overview: renderOverview, models: renderModels, workers: renderWorkers, usage: renderUsage, requests: renderRequests, health: renderHealth, releases: renderReleases, security: renderSecurity, architecture: renderArchitecture };
+  function renderGateway() {
+    const rows = state.data.models.map(model => `<tr><td class="mono">${safe(model.alias)}</td><td>${safe(model.provider)}</td><td>${safe(model.displayName)}</td><td>${safe(model.policy)}</td><td>${statusBadge(model.status)}</td></tr>`).join("");
+    return pageHead("LiteLLM model gateway", "LiteLLM 기반 Model Gateway의 개념적 동작을 보여줍니다. 실제 Gateway나 provider를 호출하지 않습니다.") + notice() +
+      card("Provider / model routing", "Worker virtual key → model allowlist → gateway alias → provider model", `<div class="table-wrap"><table><thead><tr><th>Gateway alias</th><th>Provider</th><th>Model</th><th>Routing policy</th><th>Sample health</th></tr></thead><tbody>${rows}</tbody></table></div>`) +
+      `<div class="grid three section-gap">${card("Virtual key enforcement", "Concept only", `<p>Worker별 key alias와 예산으로 접근 범위를 구분합니다. 실제 key는 생성하거나 저장하지 않습니다.</p><a href="#/workers">Worker별 접근 보기</a>`)}${card("Retry & fallback", "Disabled in this demo", `<p>재시도와 fallback은 비활성 상태를 가정합니다. 시나리오 전환은 화면에만 적용됩니다.</p><a href="#/settings">설정 보기</a>`)}${card("Usage & audit", "Synthetic metadata only", `<p>호출 본문 없이 합성 비용과 감사 이벤트를 표시합니다.</p><a href="#/usage">비용 보기</a> · <a href="#/audit">감사 기록 보기</a>`)}</div>`;
+  }
+
+  function renderAudit() {
+    const rows = state.data.audit.map(item => `<tr><td class="mono">${safe(item.id)}</td><td>${safe(item.time)}</td><td>${safe(item.actor)}</td><td>${safe(item.action)}</td><td>${safe(item.target)}</td><td>${statusBadge(item.result)}</td></tr>`).join("");
+    return pageHead("Audit trail", "미리 준비한 합성 감사 이벤트입니다. 현재 사용자 활동을 기록하거나 전송하지 않습니다.") + notice() + card("Synthetic audit events", "No live audit connection", `<div class="table-wrap"><table><thead><tr><th>Event</th><th>Time</th><th>Actor</th><th>Action</th><th>Target</th><th>Result</th></tr></thead><tbody>${rows}</tbody></table></div>`);
+  }
+
+  function renderSettings() {
+    const config = Object.entries(state.data.config).map(([key, value]) => `<dt>${safe(key)}</dt><dd>${safe(value)}</dd>`).join("");
+    return pageHead("Demo settings", "읽기 전용 설정 예시입니다. 실제 endpoint, credential 입력 또는 운영 설정 저장 기능은 없습니다.") + notice() +
+      `<div class="grid two">${card("Gateway configuration", "Planned LiteLLM runtime · not deployed", `<dl class="detail-list">${config}</dl>`)}${card("Simulation preferences", "This browser session only", `<p>상단 Demo scenario에서 기본 표본, 지연, 장애 훈련을 선택할 수 있습니다. 새로고침하면 기본 표본으로 초기화됩니다.</p><p>비용 단위: Demo Credits · 실제 과금 없음</p><p>데이터: 합성 fixture · 실제 API 연결 없음</p><a href="#/architecture">시연 범위와 구조 보기</a>`)}</div>`;
+  }
+
+  const renderers = { gateway: renderGateway, audit: renderAudit, settings: renderSettings, overview: renderOverview, models: renderModels, workers: renderWorkers, usage: renderUsage, requests: renderRequests, health: renderHealth, releases: renderReleases, security: renderSecurity, architecture: renderArchitecture };
 
   function renderNav() {
     let group = "";
@@ -166,6 +187,8 @@
   }
 
   function render() {
+    if (!state.data) return;
+    closeDetail();
     const route = routes.find(item => item.id === state.route) || routes[0];
     state.route = route.id;
     document.title = `${route.label} · DreamLabs LLMOps Demo`;
@@ -184,10 +207,22 @@
     const requestSearch = document.querySelector("#request-search");
     if (requestSearch) requestSearch.addEventListener("input", event => { state.query = event.target.value; render(); document.querySelector("#request-search")?.focus(); });
     const modelSearch = document.querySelector("#model-search");
-    if (modelSearch) modelSearch.addEventListener("input", event => {
-      const needle = event.target.value.toLowerCase();
-      document.querySelectorAll("#model-table tbody tr").forEach(row => { row.hidden = !row.textContent.toLowerCase().includes(needle); });
-    });
+    const filterModels = () => {
+      const needle = (modelSearch?.value || "").toLowerCase();
+      document.querySelectorAll("#model-table tbody tr").forEach(row => {
+        row.hidden = !row.textContent.toLowerCase().includes(needle) || (state.modelFilter !== "all" && row.dataset.modelStatus !== state.modelFilter);
+      });
+    };
+    modelSearch?.addEventListener("input", filterModels);
+    document.querySelectorAll("[data-model-filter]").forEach(button => button.addEventListener("click", () => {
+      state.modelFilter = button.dataset.modelFilter;
+      document.querySelectorAll("[data-model-filter]").forEach(chip => {
+        chip.classList.toggle("active", chip.dataset.modelFilter === state.modelFilter);
+        chip.setAttribute("aria-pressed", String(chip.dataset.modelFilter === state.modelFilter));
+      });
+      filterModels();
+    }));
+    filterModels();
   }
 
   function openDetail(type, id) {
@@ -198,6 +233,8 @@
     state.returnFocus = document.activeElement;
     els.drawerTitle.textContent = labels[type];
     els.drawerBody.innerHTML = `<div class="notice"><strong>DEMO</strong><span>합성 레코드이며 실제 운영 데이터를 나타내지 않습니다.</span></div><dl class="detail-list">${Object.entries(item).map(([key,value]) => `<dt>${safe(key)}</dt><dd>${safe(value)}</dd>`).join("")}</dl><div class="section-gap">${demoButton("Simulate follow-up", true)}</div>`;
+    els.drawer.inert = false;
+    document.querySelector(".app-shell").inert = true;
     els.drawer.classList.add("open");
     els.drawer.setAttribute("aria-hidden", "false");
     els.drawerBackdrop.hidden = false;
@@ -208,6 +245,8 @@
 
   function closeDetail() {
     const wasOpen = els.drawer.classList.contains("open");
+    els.drawer.inert = true;
+    document.querySelector(".app-shell").inert = false;
     els.drawer.classList.remove("open");
     els.drawer.setAttribute("aria-hidden", "true");
     els.drawerBackdrop.hidden = true;
@@ -251,6 +290,7 @@
     }
   }
 
+  document.querySelector(".skip-link").addEventListener("click", event => { event.preventDefault(); els.main.focus(); });
   window.addEventListener("hashchange", () => { state.route = routeFromHash(); render(); });
   els.scenario.addEventListener("change", event => { state.scenario = event.target.value; render(); showToast(`${scenarioCopy[state.scenario].label} 시나리오로 전환했습니다.`); });
   els.menu.addEventListener("click", () => els.sidebar.classList.contains("open") ? closeMenu() : openMenu());
@@ -258,6 +298,13 @@
   els.drawerClose.addEventListener("click", closeDetail);
   els.drawerBackdrop.addEventListener("click", closeDetail);
   document.querySelector("#notification-button").addEventListener("click", () => showToast("데모 알림 3건: budget warning, provider latency, release note."));
-  document.addEventListener("keydown", event => { if (event.key === "Escape") { closeDetail(); closeMenu(); } });
+  document.addEventListener("keydown", event => {
+    if (event.key === "Tab" && els.drawer.classList.contains("open")) {
+      const items = [...els.drawer.querySelectorAll("button, a[href], input, select, [tabindex='0']")];
+      const first = items[0], last = items.at(-1);
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    }
+    if (event.key === "Escape") { closeDetail(); closeMenu(); } });
   init();
 })();
