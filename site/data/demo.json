@@ -1,0 +1,73 @@
+{
+  "meta": {
+    "environment": "demo-static",
+    "sampledAt": "2026-10-13 14:30 KST",
+    "currency": "Demo Credits",
+    "connected": false,
+    "notice": "합성 데이터 기반 정적 시연입니다. 실제 Gateway에 연결되지 않습니다."
+  },
+  "summary": {
+    "requests": 1842,
+    "completed": 1793,
+    "failed": 31,
+    "rateLimited": 18,
+    "successRate": 97.3,
+    "p95LatencyMs": 1820,
+    "demoCost": 184.2,
+    "activeWorkers": 3
+  },
+  "daily": [
+    {"label":"10/07","requests":238,"cost":21.8},
+    {"label":"10/08","requests":255,"cost":24.1},
+    {"label":"10/09","requests":271,"cost":27.5},
+    {"label":"10/10","requests":249,"cost":23.6},
+    {"label":"10/11","requests":278,"cost":28.7},
+    {"label":"10/12","requests":285,"cost":30.1},
+    {"label":"10/13","requests":266,"cost":28.4}
+  ],
+  "models": [
+    {"id":"demo-model-balanced","displayName":"Balanced Reasoner","provider":"Provider Alpha","alias":"dream-balanced","status":"healthy","requests":780,"successRate":98.1,"p95LatencyMs":1650,"cost":86.4,"context":"128K","policy":"Default"},
+    {"id":"demo-model-fast","displayName":"Fast Assistant","provider":"Provider Beta","alias":"dream-fast","status":"healthy","requests":620,"successRate":97.9,"p95LatencyMs":840,"cost":62.8,"context":"64K","policy":"Low latency"},
+    {"id":"demo-model-deep","displayName":"Deep Analyst","provider":"Provider Gamma","alias":"dream-deep","status":"degraded","requests":442,"successRate":94.8,"p95LatencyMs":2940,"cost":35.0,"context":"200K","policy":"Analysis"}
+  ],
+  "workers": [
+    {"id":"demo-worker-00","name":"worker00","profile":"Operations","keyAlias":"vk_demo_worker00","status":"active","requests":920,"budget":120,"used":91.5,"lastSeen":"2분 전"},
+    {"id":"demo-worker-qa","name":"worker-qa","profile":"Validation","keyAlias":"vk_demo_workerqa","status":"active","requests":610,"budget":80,"used":58.2,"lastSeen":"5분 전"},
+    {"id":"demo-worker-docs","name":"worker-docs","profile":"Documentation","keyAlias":"vk_demo_workerdocs","status":"active","requests":312,"budget":40,"used":34.5,"lastSeen":"11분 전"}
+  ],
+  "requests": [
+    {"id":"demo-req-a81c","time":"14:28:43","worker":"worker00","model":"dream-balanced","operation":"chat.completions","status":"completed","latencyMs":1420,"tokens":2840,"cost":0.42},
+    {"id":"demo-req-b72d","time":"14:27:16","worker":"worker-qa","model":"dream-fast","operation":"responses","status":"completed","latencyMs":760,"tokens":1180,"cost":0.18},
+    {"id":"demo-req-c63e","time":"14:25:09","worker":"worker-docs","model":"dream-deep","operation":"chat.completions","status":"failed","latencyMs":3010,"tokens":0,"cost":0},
+    {"id":"demo-req-d54f","time":"14:23:41","worker":"worker00","model":"dream-balanced","operation":"responses","status":"completed","latencyMs":1310,"tokens":3210,"cost":0.49},
+    {"id":"demo-req-e45a","time":"14:21:02","worker":"worker-qa","model":"dream-fast","operation":"embeddings","status":"rate-limited","latencyMs":220,"tokens":0,"cost":0},
+    {"id":"demo-req-f36b","time":"14:18:37","worker":"worker-docs","model":"dream-deep","operation":"responses","status":"completed","latencyMs":2730,"tokens":4120,"cost":0.63}
+  ],
+  "incidents": [
+    {"id":"demo-incident-003","title":"Provider Gamma latency elevated","severity":"SEV-3","status":"monitoring","started":"2026-10-13 13:42","impact":"Deep Analyst 요청 일부 지연","owner":"Demo Platform Team"},
+    {"id":"demo-incident-002","title":"Budget alert delivery delay","severity":"SEV-4","status":"resolved","started":"2026-10-11 09:18","impact":"관리 알림 지연, 요청 처리 영향 없음","owner":"Demo Operations"},
+    {"id":"demo-incident-001","title":"Synthetic readiness drill","severity":"DRILL","status":"resolved","started":"2026-10-08 16:00","impact":"시연용 훈련, 사용자 영향 없음","owner":"Demo Platform Team"}
+  ],
+  "releases": [
+    {"id":"demo-release-012","version":"demo-0.12.0","state":"active","date":"2026-10-12","summary":"관측성 화면과 비용 예산 뷰 개선","actor":"release-demo"},
+    {"id":"demo-release-011","version":"demo-0.11.0","state":"superseded","date":"2026-10-08","summary":"Worker virtual key 정책 시연 추가","actor":"release-demo"},
+    {"id":"demo-release-010","version":"demo-0.10.0","state":"superseded","date":"2026-10-03","summary":"초기 Gateway console shell","actor":"release-demo"}
+  ],
+  "audit": [
+    {"id":"demo-audit-77","time":"14:12","actor":"demo-operator","action":"Viewed model policy","target":"dream-balanced","result":"allowed"},
+    {"id":"demo-audit-76","time":"13:54","actor":"release-demo","action":"Compared configuration","target":"demo-0.12.0","result":"allowed"},
+    {"id":"demo-audit-75","time":"13:21","actor":"demo-operator","action":"Simulated key rotation","target":"vk_demo_worker00","result":"demo-only"},
+    {"id":"demo-audit-74","time":"12:46","actor":"policy-demo","action":"Blocked unknown model alias","target":"demo-unknown","result":"blocked"}
+  ],
+  "config": {
+    "replicas": 1,
+    "processes": 1,
+    "database": "Dedicated PostgreSQL (planned)",
+    "cache": "Disabled",
+    "retry": "Disabled",
+    "fallback": "Disabled",
+    "tls": "Reverse proxy (planned)",
+    "credentialBoundary": "Gateway only",
+    "databaseExposure": "Host port closed"
+  }
+}

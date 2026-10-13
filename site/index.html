@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="DreamLabs LLMOps 모델 게이트웨이 운영 콘솔 정적 데모">
+  <meta name="theme-color" content="#251a2b">
+  <title>DreamLabs LLMOps · Demo Console</title>
+  <link rel="stylesheet" href="./assets/app.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+  <div class="demo-banner" role="status">
+    <span class="demo-dot" aria-hidden="true"></span>
+    <strong>DEMO · NON-PRODUCTION</strong>
+    <span>합성 데이터 기반 정적 시연입니다. 실제 Gateway에 연결되지 않습니다.</span>
+  </div>
+
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="주 탐색">
+      <a class="brand" href="#/overview" aria-label="DreamLabs LLMOps 홈">
+        <span class="brand-mark" aria-hidden="true">DL</span>
+        <span><b>DreamLabs</b><small>LLMOps Gateway</small></span>
+      </a>
+      <div class="environment-card">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span><b>Demo environment</b><small>Static simulation</small></span>
+      </div>
+      <nav class="nav-list" id="primary-nav"></nav>
+      <div class="sidebar-footer">
+        <div class="mini-label">Endpoint preview</div>
+        <code>llmops.workers<br>.dreamlabs.co.kr</code>
+        <span class="static-badge">STATIC · SAFE</span>
+      </div>
+    </aside>
+
+    <div class="main-column">
+      <header class="topbar">
+        <button class="icon-button menu-button" id="menu-button" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="sidebar">
+          <span aria-hidden="true">☰</span>
+        </button>
+        <div class="breadcrumb" id="breadcrumb">LLMOps / Overview</div>
+        <div class="topbar-actions">
+          <label class="select-label" for="scenario-select">Demo scenario</label>
+          <select id="scenario-select" aria-label="데모 시나리오 선택">
+            <option value="normal">Normal</option>
+            <option value="degraded">Degraded</option>
+            <option value="incident">Incident drill</option>
+          </select>
+          <button class="icon-button" id="notification-button" type="button" aria-label="데모 알림 보기">
+            <span aria-hidden="true">●</span><span class="notification-count">3</span>
+          </button>
+          <div class="avatar" aria-label="Demo operator">DO</div>
+        </div>
+      </header>
+
+      <main id="main-content" tabindex="-1"></main>
+      <footer class="app-footer">
+        <span>DreamLabs WorkerOps · LLMOps Prototype</span>
+        <span>Sample data · No live connection</span>
+      </footer>
+    </div>
+  </div>
+
+  <button class="sidebar-scrim" id="sidebar-scrim" type="button" aria-label="메뉴 닫기"></button>
+
+  <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
+  <aside class="detail-drawer" id="detail-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" aria-hidden="true">
+    <div class="drawer-header">
+      <div><span class="eyebrow">DEMO DETAIL</span><h2 id="drawer-title">상세 정보</h2></div>
+      <button class="icon-button" id="drawer-close" type="button" aria-label="상세 패널 닫기">×</button>
+    </div>
+    <div class="drawer-body" id="drawer-body"></div>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  <noscript>이 데모 콘솔은 화면 전환을 위해 JavaScript가 필요합니다.</noscript>
+  <script src="./assets/app.js" defer></script>
+</body>
+</html>
