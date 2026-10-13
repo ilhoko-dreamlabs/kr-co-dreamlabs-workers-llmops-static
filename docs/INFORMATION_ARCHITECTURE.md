@@ -21,6 +21,7 @@ Worker identity
 | Group | Screen | Primary question |
 | --- | --- | --- |
 | Operate | Overview | 현재 운영 그림은 무엇인가? |
+| Operate | Model Gateway | LiteLLM alias, provider, policy 경계는 무엇인가? |
 | Operate | Model Catalog | 어떤 Gateway alias와 정책이 제공되는가? |
 | Operate | Workers / Keys | 누가 어떤 경계와 budget으로 접근하는가? |
 | Observe | Usage / Cost | 사용량과 비용은 어디에 집중되는가? |
@@ -28,6 +29,8 @@ Worker identity
 | Observe | Health / Incidents | 현재 상태와 대응 사건은 무엇인가? |
 | Govern | Releases / Config | 어떤 구성과 release가 기준인가? |
 | Govern | Security / Access | secret, identity, audit 경계는 무엇인가? |
+| Govern | Audit | 어떤 합성 감사 이벤트를 검토할 수 있는가? |
+| Govern | Settings | 어떤 읽기 전용 데모 설정을 가정하는가? |
 | Govern | Architecture / Runbook | 구조와 승인 기반 대응 절차는 무엇인가? |
 
 ## Data minimization
